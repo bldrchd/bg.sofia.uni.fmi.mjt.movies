@@ -48,7 +48,7 @@ public final class Movie {
     }
 
     private static String parseMovieTitle(String token) {
-        return token.substring(0, token.lastIndexOf("(")).strip();
+        return token.substring(0, token.lastIndexOf('(')).strip();
     }
 
     private static String parseMovieYear(String token) {
