@@ -34,11 +34,11 @@ public final class Movie {
 
         for (int i = 1; i < tokens.length; i++) {
             String[] name = tokens[i].split(", ");
-            String lastName = name[0].strip();
+            String lastName = name[0].trim();//strip() for java 11
             String firstName = "";
 
             if (name.length > 1) {
-                firstName = name[1].strip();
+                firstName = name[1].trim();
             }
 
             actors.add(new Actor(firstName, lastName));
@@ -48,7 +48,7 @@ public final class Movie {
     }
 
     private static String parseMovieTitle(String token) {
-        return token.substring(0, token.lastIndexOf('(')).strip();
+        return token.substring(0, token.lastIndexOf('(')).trim();
     }
 
     private static String parseMovieYear(String token) {

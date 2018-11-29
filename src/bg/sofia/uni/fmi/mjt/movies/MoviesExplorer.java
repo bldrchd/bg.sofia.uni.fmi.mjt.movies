@@ -23,7 +23,6 @@ public class MoviesExplorer {
      * @throws IOException 
      */
     public MoviesExplorer(InputStream dataInput) throws IOException {
-       // throw new UnsupportedOperationException("Method not yet implemented");
          try( BufferedReader reader = new BufferedReader(new InputStreamReader(dataInput))) {
              movies = reader.lines().map(Movie::createMovie).collect(Collectors.toList());
          }
@@ -52,9 +51,10 @@ public class MoviesExplorer {
      * */
     public Movie findFirstMovieWithTitle(String title) { 
         Optional<Movie> movie = movies.stream().filter(m -> m.getTitle().equals(title)).findFirst();
-        if (movie.isPresent())
+        if (movie.isPresent()) {
             return movie.get();
-        throw new IllegalArgumentException();
+        } else 
+            throw new IllegalArgumentException();
     }
     
     /*

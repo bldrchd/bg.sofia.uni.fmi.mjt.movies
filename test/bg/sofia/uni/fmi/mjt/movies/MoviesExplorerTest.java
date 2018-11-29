@@ -30,26 +30,26 @@ public class MoviesExplorerTest {
     
     @Before
     public void loadData() throws IOException{
-        String dataInput = "Title1 (1990)/ActorLastName1, Name1/ActorLastName2, Name2/nTitleMovie2 (1991)/ LastName1, Name1/LastName2, Name2/ LastName3, Name3/nTitle3 (2000)/Actor1/Actor2, Name2/Actor3, Name3";
+        String dataInput = "Title1 (1990)/ActorLastName1, Name1/ActorLastName2, Name2 \nTitleMovie2 (1991)/ LastName1, Name1/LastName2, Name2/ LastName3, Name3 \nTitle3 (2000)/Actor1/Actor2, Name2/Actor3, Name3";
         ByteArrayInputStream input = new ByteArrayInputStream(dataInput.getBytes());
         me = new MoviesExplorer(input);
     }
 
     @Test
     public void testGetMovies() throws IOException {
-        Collection<Movie> collection = me.getMovies();
-        assertTrue(collection.contains("Title1"));
-        assertTrue(collection.contains("Title2"));
-        assertTrue(collection.contains("Title3"));
+       // Collection<Movie> collection = me.getMovies();
+        assertTrue(me.getMovies().contains("Title1"));
+        assertTrue(me.getMovies().contains("TitleMovie2"));
+        assertTrue(me.getMovies().contains("Title3"));
     }
     
     @Test
     public void testCountMoviesReleasedIn() {
-        assertEquals(1, me.countMoviesReleasedIn(1990));
+        assertEquals(1, me.countMoviesReleasedIn(1991));
     }
     
     @Test
     public void testFindFirstMovieWithTitle() {
-        assertEquals("Title2", me.findFirstMovieWithTitle("Title2").getTitle());
+        assertEquals("TitleMovie2", me.findFirstMovieWithTitle("TitleMovie2").getTitle());
     }
 }
