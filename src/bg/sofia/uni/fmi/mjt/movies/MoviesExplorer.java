@@ -7,9 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
-
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import bg.sofia.uni.fmi.mjt.movies.model.Actor;
@@ -32,8 +38,7 @@ public class MoviesExplorer {
      * Returns all the movies loaded from the dataset.
      **/
     public Collection<Movie> getMovies() {
-        List<Movie> list = movies.stream().collect(Collectors.toList());
-        return list;
+        return movies.stream().collect(Collectors.toList());
     }
 
     // Other methods ...
@@ -41,8 +46,7 @@ public class MoviesExplorer {
      * Returns the count of the movies released in @code year
      * */
     public int countMoviesReleasedIn(int year){
-        long count = movies.stream().filter(m -> m.getYear() == year).count();
-        return (int) count;
+        return (int) movies.stream().filter(m -> m.getYear() == year).count();
     }
     
     /*
@@ -50,54 +54,56 @@ public class MoviesExplorer {
      * @throws IllegalArgumentException if not found such
      * */
     public Movie findFirstMovieWithTitle(String title) { 
-        Optional<Movie> movie = movies.stream().filter(m -> m.getTitle().equals(title)).findFirst();
-        if (movie.isPresent()) {
-            return movie.get();
-        } else 
-            throw new IllegalArgumentException();
+            return movies.stream().filter(m -> m.getTitle().equals(title))
+                    .findFirst()
+                    .orElseThrow(IllegalArgumentException::new);
     }
     
     /*
      * Returns all the actors in the data set
      * */
     public Collection<Actor> getAllActors() {
-        
-        return  null;
+        //Set<Actor> a = movies.stream().collect(Collections.copy(Movie::getActors, a);
+        return null;
     }
     
     /*
      * Returns the earliest release year   
      */
     public int getFirstYear() {
-        int year = 0;
-        return year;
+        List<Integer> years = movies.stream().map(Movie::getYear).collect(Collectors.toList());
+        return years.stream().mapToInt(v -> v).min().getAsInt();
     }
     
     /*
      * Returns a collection of all movies that an actor presents
      * */
     public Collection<Movie> getAllMoviesBy(Actor actor){
-        return null;
+        return movies.stream().filter(m -> m.getActors().contains(actor)).collect(Collectors.toList());
         
     }
     /*
      * Returns a collection of all movies, sorted by year of release in ascendent order
      * */
     public Collection<Movie> getMoviesSortedByReleaseYear() {
-        return null;
+        return movies.stream().sorted(Comparator.comparing(Movie::getYear)).collect(Collectors.toList());
     }
     /*
      * Returns an year that has least released movies. If there are two or more - returns randomly one
      * */
     public int findYearWithLeastNumberOfReleasedMovies(){
-       // ComparatorByYear cby = (y1, y2) -> return cby.compare(m1, m2);
-        return 0;
+        Map<Integer, Long> years = movies.stream().collect(Collectors.groupingBy(Movie::getYear, Collectors.counting()));
+        return years.entrySet().stream().min(Map.Entry.comparingByValue()).get().getKey();
     }
     
     /*
      * Returns a Movie that contains the biggest number of actors in it. If there is two or more, returns randomly one.
      * */
     public Movie findMovieWithGreatestNumberOfActors() {
-        return null;
+        Map<Movie, Integer> mov = new HashMap<>();
+        for(Movie m : movies) {
+            mov.put(m, m.getActors().size());
+        }
+        return mov.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
     }
 }

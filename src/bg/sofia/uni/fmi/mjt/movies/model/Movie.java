@@ -14,7 +14,6 @@ public final class Movie {
     private Movie(String title, int year) {
         this.title = title;
         this.year = year;
-
         actors = new HashSet<>();
     }
 
